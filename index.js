@@ -10,12 +10,17 @@ var dir       = require('node-dir'),
 var dependents = {};
 
 module.exports = function (filename, directory, cb) {
+  filename  = path.resolve(filename);
+  directory = path.resolve(directory);
+
   dir.readFiles(directory, {
-      match: /.js$/,
+      match:   /.js$/,
       exclude: /^\./
     },
     function(err, content, currentFile, next) {
       if (err) throw err;
+
+      currentFile = path.resolve(currentFile);
 
       var dependencies    = detective(content),
           currentFileDir  = path.dirname(currentFile);
@@ -25,7 +30,6 @@ module.exports = function (filename, directory, cb) {
       // Register the current file as dependent on each dependency
       dependencies.forEach(function(dep) {
         dep = path.resolve(currentFileDir, dep) + '.js';
-
         dependents[dep] = dependents[dep] || {};
         dependents[dep][currentFile] = 1;
       });
@@ -34,7 +38,6 @@ module.exports = function (filename, directory, cb) {
     },
     function(err){
       if (err) throw err;
-
       cb(Object.keys(dependents[filename] || {}));
     });
 };
