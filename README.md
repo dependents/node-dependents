@@ -30,3 +30,5 @@ Requires `npm install -g dependents`
 ```bash
 dependents filename directory
 ```
+
+TODO: Support baseDir as option

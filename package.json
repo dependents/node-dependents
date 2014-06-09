@@ -18,5 +18,9 @@
   "bugs": {
     "url": "https://github.com/mrjoelkemp/node-dependents/issues"
   },
-  "homepage": "https://github.com/mrjoelkemp/node-dependents"
+  "homepage": "https://github.com/mrjoelkemp/node-dependents",
+  "dependencies": {
+    "detective-amd": "^2.1.0",
+    "node-dir": "^0.1.5"
+  }
 }
