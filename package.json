@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Get the modules that depend on (i.e., require) a given module",
   "main": "index.js",
+  "bin": {
+    "dependents": "bin/dependents.js"
+  },
   "scripts": {
     "test": "node test/test.js"
   },
