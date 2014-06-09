@@ -20,16 +20,20 @@ module.exports = function (filename, directory, cb) {
     function(err, content, currentFile, next) {
       if (err) throw err;
 
+      if (! content) {
+        next();
+        return;
+      }
+
       currentFile = path.resolve(currentFile);
 
-      var dependencies    = detective(content),
-          currentFileDir  = path.dirname(currentFile);
+      var dependencies = detective(content);
 
       dependents[currentFile] = dependents[currentFile] || {};
 
       // Register the current file as dependent on each dependency
       dependencies.forEach(function(dep) {
-        dep = path.resolve(currentFileDir, dep) + '.js';
+        dep = path.resolve(directory, dep) + '.js';
         dependents[dep] = dependents[dep] || {};
         dependents[dep][currentFile] = 1;
       });
@@ -38,6 +42,7 @@ module.exports = function (filename, directory, cb) {
     },
     function(err){
       if (err) throw err;
+
       cb(Object.keys(dependents[filename] || {}));
     });
 };

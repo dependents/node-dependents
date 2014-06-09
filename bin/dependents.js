@@ -7,5 +7,7 @@ var getDependents = require('../'),
     directory = process.argv[3];
 
 getDependents(filename, directory, function(dependents) {
-  console.log(dependents);
+  dependents.forEach(function(dependent) {
+    console.log(dependent);
+  });
 });
