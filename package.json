@@ -1,0 +1,22 @@
+{
+  "name": "dependents",
+  "version": "0.0.0",
+  "description": "Get the modules that depend on (i.e., require) a given module",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mrjoelkemp/node-dependents.git"
+  },
+  "keywords": [
+    "dependents"
+  ],
+  "author": "Joel Kemp <joel@mrjoelkemp.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mrjoelkemp/node-dependents/issues"
+  },
+  "homepage": "https://github.com/mrjoelkemp/node-dependents"
+}
