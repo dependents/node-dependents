@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/mrjoelkemp/node-dependents",
   "dependencies": {
-    "detective-amd": "^2.1.0",
+    "detective-amd": "^2.1.1",
     "node-dir": "^0.1.5",
     "q": "^1.0.1"
   }
