@@ -1,4 +1,5 @@
-### Dependents
+# Dependents [![npm](http://img.shields.io/npm/v/dependents.svg)](https://npmjs.org/package/dependents) [![npm](http://img.shields.io/npm/dm/dependents.svg)](https://npmjs.org/package/dependents)
+
 
 Get the JS modules that depend on (i.e., require) a given module.
 
