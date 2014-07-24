@@ -5,6 +5,7 @@
 var dependents = require('../'),
     filename   = process.argv[2],
     directory  = process.argv[3],
+    config     = process.argv[4],
     cluster    = require('cluster'),
     q          = require('q');
 
@@ -84,6 +85,7 @@ if (cluster.isMaster) {
         filename:  filename,
         directory: directory,
         files:     files,
+        config:    config,
         success:   printDependents
       });
     }
@@ -104,6 +106,7 @@ if (cluster.isWorker) {
       filename:   filename,
       directory:  directory,
       files:      files,
+      config:     config,
       success: function(deps) {
         process.send(deps);
       }
