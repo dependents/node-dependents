@@ -25,49 +25,86 @@ var _dependents = {};
 var threshold = 500;
 
 /**
+ * The approximate number of times a worker should come back for more files to process.
+ * Empirically set.
+ * @type {Number}
+ */
+var numTripsPerWorker = 5;
+
+/**
  * Forks separate node processes to find dependents for the filename in parallel
  *
- * @param  {String} filename  - File to find the dependents for
- * @param  {Array}  files     - List of JS files to process
+ * @param  {String}   filename  - File to find the dependents for
+ * @param  {Array}    files     - List of JS files to process
+ * @param  {Function} cb        - Executed with String[] of dependent filenames
  */
-function spawnWorkers(filename, files) {
+function spawnWorkers(filename, files, cb) {
   var numCPUs = require('os').cpus().length,
       numFiles = files.length,
       // We don't care to overshoot the number of files, slice will correct this
-      chunkSize = Math.ceil(numFiles / numCPUs),
+      chunkSize = Math.ceil(numFiles / numCPUs / numTripsPerWorker),
+      numFilesProcessed = 0,
       worker;
 
   for (var i = 0; i < numCPUs; i++) {
     worker = cluster.fork();
-    worker.send({
-      filename: filename,
-      files: files.slice(i * chunkSize, (i + 1) * chunkSize)
-    });
   }
-}
 
-function whenAllWorkersFinish(cb) {
-  q.all(Object.keys(cluster.workers).map(function(id) {
-    var deferred = q.defer(),
-        worker = cluster.workers[id];
+  q.all(Object.keys(cluster.workers).map(function(id, idx) {
+    var worker = cluster.workers[id],
+        deferred = q.defer(),
+        delegateWork = function(worker) {
+          var _files = getMoreFiles(files, chunkSize);
+
+          if (! _files.length) {
+            deferred.resolve();
+            worker.kill();
+            return;
+          }
+
+          worker.send({
+            filename: filename,
+            files: _files
+          });
+
+          numFilesProcessed += _files.length;
+        };
+
+    delegateWork(worker);
 
     worker.on('message', function(deps) {
       deps.forEach(function(depFilename) {
         _dependents[depFilename] = 1;
       });
 
-      deferred.resolve();
-      worker.kill();
+      delegateWork(worker);
     });
 
     return deferred.promise;
   }))
-  .then(function() {
+  .done(function() {
+    if (numFilesProcessed !== numFiles) throw new Error('missed some files');
+
     cb(Object.keys(_dependents));
   });
 }
 
-/** @param  {Array} dependents */
+/**
+ * @param  {String[]} files     [description]
+ * @param  {Number} chunkSize
+ * @return {String[]}
+ */
+function getMoreFiles(files, chunkSize) {
+  if (typeof getMoreFiles.tripNum === 'undefined') getMoreFiles.tripNum = 0;
+
+  var _files = files.slice(getMoreFiles.tripNum * chunkSize, (getMoreFiles.tripNum + 1) * chunkSize);
+
+  getMoreFiles.tripNum++;
+
+  return _files;
+}
+
+/** @param {Array} dependents */
 function printDependents(dependents) {
   dependents.forEach(function(dependent) {
     console.log(dependent);
@@ -77,8 +114,7 @@ function printDependents(dependents) {
 if (cluster.isMaster) {
   var filesCb = function(files) {
     if (files.length >= threshold) {
-      spawnWorkers(filename, files);
-      whenAllWorkersFinish(printDependents);
+      spawnWorkers(filename, files, printDependents);
 
     } else {
       dependents.for({
