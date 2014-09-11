@@ -1,6 +1,6 @@
 {
   "name": "dependents",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Get the modules that depend on a given module",
   "main": "index.js",
   "bin": {
