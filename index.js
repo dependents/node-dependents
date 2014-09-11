@@ -67,7 +67,12 @@ function processFiles(options) {
   } else {
     files.forEach(function(filename) {
       var content = fs.readFileSync(filename).toString();
-      processDependents(filename, content, directory, shims);
+      try {
+        processDependents(filename, content, directory, shims);
+      } catch(e) {
+        console.log(e);
+        console.log(filename);
+      }
     });
 
     cb(getDependentsForFile(filename));
@@ -94,7 +99,8 @@ module.exports.getJSFiles = function(options) {
 
   dir.readFiles(directory, {
     match:   /.js$/,
-    exclude: /^\./
+    exclude: /^\./,
+    excludeDir: /node_modules/
   },
   function(err, content, currentFile, next) {
     if (err) throw err;
