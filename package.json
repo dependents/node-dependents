@@ -23,11 +23,11 @@
   },
   "homepage": "https://github.com/mrjoelkemp/node-dependents",
   "dependencies": {
-    "detective-amd": "^2.1.4",
-    "escodegen": "^1.3.3",
-    "node-dir": "^0.1.5",
-    "node-source-walk": "^1.1.1",
-    "q": "^1.0.1",
-    "shims": "^1.0.0"
+    "detective-amd": "~2.1.4",
+    "escodegen": "~1.3.3",
+    "node-dir": "~0.1.5",
+    "node-source-walk": "~1.1.1",
+    "q": "~1.0.1",
+    "shims": "~1.0.0"
   }
 }
