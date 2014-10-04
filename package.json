@@ -29,7 +29,6 @@
     "node-dir": "~0.1.5",
     "node-source-walk": "~1.1.1",
     "q": "~1.0.1",
-    "requirejs-config-file": "~2.0.0",
-    "shims": "~1.0.0"
+    "requirejs-config-file": "~2.0.0"
   }
 }
