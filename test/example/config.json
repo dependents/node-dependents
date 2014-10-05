@@ -1,6 +1,6 @@
-{
-  paths: {
-    'a': './a',
-    'b': './b'
+require.config({
+  "paths": {
+    "a": "./a",
+    "foobar": "./b"
   }
-}
+});
