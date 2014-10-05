@@ -3,6 +3,7 @@
 'use strict';
 
 var dependents = require('../'),
+    getJSFiles = require('../lib/getJSFiles'),
     filename   = process.argv[2],
     directory  = process.argv[3],
     config     = process.argv[4],
@@ -127,7 +128,7 @@ if (cluster.isMaster) {
     }
   };
 
-  dependents.getJSFiles({
+  getJSFiles({
     directory: directory,
     filesCb: filesCb
   });
