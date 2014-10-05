@@ -1,6 +1,7 @@
 require.config({
   "paths": {
     "a": "./a",
-    "foobar": "./b"
+    "foobar": "./b",
+    "templates": "./templates"
   }
 });
