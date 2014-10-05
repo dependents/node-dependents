@@ -2,7 +2,9 @@ var detective  = require('detective-amd'),
     path       = require('path'),
     fs         = require('fs'),
     q          = require('q'),
-    getJSFiles = require('./lib/getJSFiles');
+    getJSFiles = require('./lib/getJSFiles'),
+    lookup     = require('./lib/lookup'),
+    ConfigFile = require('requirejs-config-file').ConfigFile;
 
 /**
  * Look-up-table whose keys are filenames of JS files in the directory
@@ -11,6 +13,12 @@ var detective  = require('detective-amd'),
  * @type {Object}
  */
 var dependents = {};
+
+/**
+ * Loaded RequireJS configuration
+ * @type {Object | null}
+ */
+var config;
 
 /**
  * Computes the dependents for the given file across a directory or list of filenames
@@ -25,6 +33,10 @@ module.exports.for = function(options) {
   if (! options || ! options.filename) throw new Error('expected filename whose dependents to compute');
 
   options.filename = path.resolve(options.filename);
+
+  if (options.config) {
+    config = new ConfigFile(options.config).read();
+  }
 
   processFiles.call(this, options);
 };
@@ -41,8 +53,7 @@ function processFiles(options) {
   var directory = options.directory,
       filename  = options.filename,
       files     = options.files,
-      cb        = options.success,
-      shims     = options.shims;
+      cb        = options.success;
 
   if (!cb)        throw new Error('expected callback');
   if (!directory) throw new Error('expected directory name');
@@ -51,7 +62,7 @@ function processFiles(options) {
     getJSFiles({
       directory: directory,
       contentCb: function(file, content) {
-        processDependents(file, content, directory, shims);
+        processDependents(file, content, directory);
       },
       // When all files have been processed
       filesCb: function() {
@@ -63,7 +74,7 @@ function processFiles(options) {
     files.forEach(function(filename) {
       var content = fs.readFileSync(filename).toString();
       try {
-        processDependents(filename, content, directory, shims);
+        processDependents(filename, content, directory);
       } catch(e) {
         console.log(e);
         console.log(filename);
@@ -75,12 +86,13 @@ function processFiles(options) {
 }
 
 /**
+ * Registers all dependencies of the given file as "used"
+ *
  * @param {String} filename
  * @param {String} fileContent
  * @param {String} directory
- * @param {Object} shims
  */
-function processDependents(filename, fileContent, directory, shims) {
+function processDependents(filename, fileContent, directory) {
   if (! fileContent) return;
 
   // @todo: Detect if it's commonjs or amd then choose the appropriate detective
@@ -92,12 +104,12 @@ function processDependents(filename, fileContent, directory, shims) {
   // Register the current file as dependent on each dependency
   dependencies.forEach(function(dep) {
     // Look up the dep to see if it's aliased in the config
-    if (shims && shims[dep]) {
-      dep = shims[dep];
+    if (config) {
+      dep = lookup(config, dep);
     }
 
-    dep                       = (directory ? path.resolve(directory, dep) : dep) + '.js';
-    dependents[dep]           = dependents[dep] || {};
+    dep = (directory ? path.resolve(directory, dep) : dep) + '.js';
+    dependents[dep] = dependents[dep] || {};
     dependents[dep][filename] = 1;
   });
 }

@@ -1,6 +1,7 @@
 // Dependent: no one
 define([
-  './b'
-], function (B) {
+  './b',
+  './c'
+], function (B, C) {
 
 });
