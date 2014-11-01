@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/mrjoelkemp/node-dependents",
   "dependencies": {
-    "detective-amd": "~2.1.4",
+    "detective-amd": "~2.2.0",
     "node-dir": "~0.1.5",
     "q": "~1.0.1",
     "requirejs-config-file": "~2.0.0"
