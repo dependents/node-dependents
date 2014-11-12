@@ -1,8 +1,8 @@
 var precinct   = require('precinct'),
     path       = require('path'),
     fs         = require('fs'),
+    lookup     = require('module-lookup-amd'),
     getJSFiles = require('./lib/getJSFiles'),
-    lookup     = require('./lib/lookup'),
     ConfigFile = require('requirejs-config-file').ConfigFile,
 
     /**
