@@ -4,7 +4,7 @@ var assert = require('assert'),
     lookup = require('../../lib/lookup');
 
 describe('lib/lookup', function() {
-  var configPath = path.resolve(__dirname, '../example/config.json');
+  var configPath = path.resolve(__dirname, '../example/amd/config.json');
 
   it('returns the real path of an aliased module given a path to a requirejs config file', function() {
     assert(lookup(configPath, 'a') === './a');
