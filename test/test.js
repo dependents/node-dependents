@@ -47,7 +47,7 @@ describe('dependents', function() {
         assert(dependents.length);
         done();
       }
-    })
+    });
   });
 
   it('finds the dependents of es6 modules', function (done) {
@@ -58,6 +58,17 @@ describe('dependents', function() {
         assert(dependents.length);
         done();
       }
-    })
+    });
+  });
+
+  it('excludes node_modules and bower_components folders by default', function(done) {
+    dependents.for({
+      filename: __dirname + '/example/exclusions/b.js',
+      directory: __dirname + '/example/exclusions',
+      success: function (dependents) {
+        assert(!dependents.length);
+        done();
+      }
+    });
   });
 });

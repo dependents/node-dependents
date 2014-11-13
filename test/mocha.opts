@@ -1,2 +1,2 @@
-test/*.js test/lib/*.js
+test/*.js
 -u bdd
