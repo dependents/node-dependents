@@ -24,12 +24,13 @@
   },
   "homepage": "https://github.com/mrjoelkemp/node-dependents",
   "dependencies": {
-    "detective-amd": "~2.2.0",
+    "module-lookup-amd": "~1.0.0",
     "node-dir": "~0.1.5",
+    "precinct": "~2.0.0",
     "q": "~1.0.1",
     "requirejs-config-file": "~2.0.0"
   },
   "devDependencies": {
-    "mocha": "^1.21.4"
+    "mocha": "~1.21.4"
   }
 }
