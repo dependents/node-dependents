@@ -2,7 +2,7 @@ var precinct   = require('precinct'),
     path       = require('path'),
     fs         = require('fs'),
     lookup     = require('module-lookup-amd'),
-    getJSFiles = require('./lib/getJSFiles'),
+    getJSFiles = require('get-all-js-files'),
     ConfigFile = require('requirejs-config-file').ConfigFile,
 
     /**
@@ -60,6 +60,9 @@ function processFiles(options) {
   if (!files) {
     getJSFiles({
       directory: directory,
+      dirOptions: {
+        excludeDir: /(node_modules|bower_components)/
+      },
       contentCb: function(file, content) {
         processDependents(file, content, directory);
       },
