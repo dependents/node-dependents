@@ -10,7 +10,7 @@ var dependents = require('../'),
     cluster    = require('cluster'),
     q          = require('q'),
     dir        = require('node-dir'),
-    util       = require('./lib/util'),
+    util       = require('../lib/util'),
 
     /**
      * Uniquely aggregates the dependents across forks (if used).
