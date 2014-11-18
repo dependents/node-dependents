@@ -8,7 +8,7 @@
     "dependency-lookup": "bin/dependencyLookup.js"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "jscs -p airbnb test/test.js bin/ index.js && mocha test/*.js -u bdd"
   },
   "repository": {
     "type": "git",
@@ -27,11 +27,12 @@
     "get-all-js-files": "~1.2.0",
     "module-lookup-amd": "~1.0.0",
     "node-dir": "~0.1.5",
-    "precinct": "~2.0.0",
+    "precinct": "~2.1.0",
     "q": "~1.0.1",
     "requirejs-config-file": "~2.0.0"
   },
   "devDependencies": {
+    "jscs": "~1.7.3",
     "mocha": "~1.21.4"
   }
 }
