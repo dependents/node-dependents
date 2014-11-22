@@ -1,7 +1,7 @@
 {
   "name": "dependents",
   "version": "1.6.0",
-  "description": "Get the modules that depend on a given module",
+  "description": "Get the files that depend on a given JS/SASS file",
   "main": "index.js",
   "bin": {
     "dependents": "bin/dependents.js",
