@@ -27,7 +27,7 @@
     "get-all-js-files": "~1.2.0",
     "module-lookup-amd": "~1.0.0",
     "node-dir": "~0.1.5",
-    "precinct": "~2.1.0",
+    "precinct": "~2.3.2",
     "q": "~1.0.1",
     "requirejs-config-file": "~2.0.0"
   },
