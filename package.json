@@ -8,7 +8,7 @@
     "dependency-lookup": "bin/dependencyLookup.js"
   },
   "scripts": {
-    "test": "jscs -p airbnb test/test.js bin/ index.js && mocha test/*.js -u bdd"
+    "test": "jscs -p google test/test.js bin/ index.js && mocha test/*.js -u bdd"
   },
   "repository": {
     "type": "git",
