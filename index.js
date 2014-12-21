@@ -18,7 +18,7 @@ var util = require('./lib/util');
  * @param  {String}       [options.config]  - Path to the shim config
  * @param  {String[]}     [options.exclusions] - List of files and directories to exclude
  */
-module.exports.for = function(options) {
+module.exports = function dependents(options) {
   if (!options || !options.filename) {
     throw new Error('expected filename whose dependents to compute');
   }
@@ -32,7 +32,7 @@ module.exports.for = function(options) {
   options.dependents = {};
 
   if (options.config && typeof options.config !== 'object') {
-    options.config = this._readConfig(options.config);
+    options.config = dependents._readConfig(options.config);
   }
 
   processFiles(options);

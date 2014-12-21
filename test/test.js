@@ -5,7 +5,7 @@ var sinon = require('sinon');
 
 describe('dependents', function() {
   it('does not throw on esprima errors', function(done) {
-    dependents.for({
+    dependents({
       filename: __dirname + '/example/error.js',
       directory: __dirname + '/example',
       success: function(dependents) {
@@ -19,7 +19,7 @@ describe('dependents', function() {
     var config = dependents._readConfig(__dirname + '/example/amd/config.json');
     var spy = sinon.spy(dependents, '_readConfig');
 
-    dependents.for({
+    dependents({
       filename: __dirname + '/example/error.js',
       directory: __dirname + '/example',
       config: config,
@@ -32,7 +32,7 @@ describe('dependents', function() {
 
   describe('exclusions', function() {
     it('excludes common 3rd party folders by default', function(done) {
-      dependents.for({
+      dependents({
         filename: __dirname + '/example/exclusions/a.js',
         directory: __dirname + '/example/exclusions',
         success: function(dependents) {
@@ -45,7 +45,7 @@ describe('dependents', function() {
     });
 
     it('excludes custom folders', function(done) {
-      dependents.for({
+      dependents({
         filename: __dirname + '/example/exclusions/a.js',
         directory: __dirname + '/example/exclusions',
         exclusions: ['customExclude'],
@@ -60,7 +60,7 @@ describe('dependents', function() {
 
     it('cannot exclude particular subdirectories', function(done) {
       // node-dir looks at a directory name at a time, not partial paths
-      dependents.for({
+      dependents({
         filename: __dirname + '/example/exclusions/a.js',
         directory: __dirname + '/example/exclusions',
         exclusions: ['customExclude/subdir'],
@@ -76,7 +76,7 @@ describe('dependents', function() {
 
   describe('amd', function() {
     it('returns the (non-aliased) dependents', function(done) {
-      dependents.for({
+      dependents({
         filename: __dirname + '/example/amd/b.js',
         directory: __dirname + '/example/amd',
         success: function(dependents) {
@@ -88,7 +88,7 @@ describe('dependents', function() {
     });
 
     it('resolves aliased modules if given a requirejs config', function(done) {
-      dependents.for({
+      dependents({
         filename: __dirname + '/example/amd/b.js',
         directory: __dirname + '/example/amd',
         config: __dirname + '/example/amd/config.json',
@@ -104,7 +104,7 @@ describe('dependents', function() {
 
   describe('commonjs', function() {
     it('finds the dependents of commonjs modules', function(done) {
-      dependents.for({
+      dependents({
         filename: __dirname + '/example/commonjs/b.js',
         directory: __dirname + '/example/commonjs',
         success: function(dependents) {
@@ -115,7 +115,7 @@ describe('dependents', function() {
     });
 
     it('handles relative dependencies', function(done) {
-      dependents.for({
+      dependents({
         filename: __dirname + '/example/commonjs/b.js',
         directory: __dirname + '/example/commonjs',
         success: function(dependents) {
@@ -130,7 +130,7 @@ describe('dependents', function() {
 
   describe('es6', function() {
     it('finds the dependents of es6 modules', function(done) {
-      dependents.for({
+      dependents({
         filename: __dirname + '/example/es6/b.js',
         directory: __dirname + '/example/es6',
         success: function(dependents) {
@@ -143,7 +143,7 @@ describe('dependents', function() {
 
   describe('sass', function() {
     it('finds the dependents of sass files', function(done) {
-      dependents.for({
+      dependents({
         filename: __dirname + '/example/sass/_foo.scss',
         directory: __dirname + '/example/sass',
         success: function(dependents) {

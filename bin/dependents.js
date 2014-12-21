@@ -147,7 +147,7 @@ function filesCb(files) {
     spawnWorkers(filename, files, printDependents);
 
   } else {
-    dependents.for({
+    dependents({
       filename: filename,
       directory: directory,
       files: files,
@@ -194,7 +194,7 @@ if (cluster.isWorker) {
     var files = args.files;
     var config = args.config;
 
-    dependents.for({
+    dependents({
       filename: filename,
       directory: directory,
       files: files,

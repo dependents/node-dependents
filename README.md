@@ -17,7 +17,7 @@
 var dependents = require('dependents');
 
 // Find all modules that require (depend on) ./a.js
-dependents.for({
+dependents({
   filename: './a.js',
   directory: './',
   config: 'path/to/my/config.js' // optional
@@ -34,7 +34,7 @@ dependents.for({
 var dependents = require('dependents');
 
 // Find all sass files that import (depend on) _myPartial.scss
-dependents.for({
+dependents({
   filename: '_myPartial.scss',
   directory: 'path/to/my/sass',
   success: function (dependents) {
