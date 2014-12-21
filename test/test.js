@@ -4,17 +4,6 @@ var defaultExclusions = require('../lib/util').DEFAULT_EXCLUDE_DIR;
 var sinon = require('sinon');
 
 describe('dependents', function() {
-  it('does not throw on esprima errors', function(done) {
-    dependents({
-      filename: __dirname + '/example/error.js',
-      directory: __dirname + '/example',
-      success: function(dependents) {
-        assert(!dependents.length);
-        done();
-      }
-    });
-  });
-
   it('reuses a given configuration object config', function(done) {
     var config = dependents._readConfig(__dirname + '/example/amd/config.json');
     var spy = sinon.spy(dependents, '_readConfig');
@@ -23,10 +12,50 @@ describe('dependents', function() {
       filename: __dirname + '/example/error.js',
       directory: __dirname + '/example',
       config: config,
-      success: function(dependents) {
+      success: function(err, dependents) {
         assert(!spy.called);
         done();
       }
+    });
+  });
+
+  describe('exceptions', function() {
+    it('throws if a success callback was not supplied', function() {
+      assert.throws(function() {
+        dependents({
+          filename: __dirname + '/example/error.js',
+          directory: __dirname + '/example'
+        });
+      });
+    });
+
+    it('throws if a filename was not supplied', function() {
+      assert.throws(function() {
+        dependents({
+          directory: __dirname + '/example'
+        });
+      });
+    });
+
+    it('throws if a directory was not supplied', function() {
+      assert.throws(function() {
+        dependents({
+          filename: __dirname + '/example/error.js',
+          success: function(err, dependents) {}
+        });
+      });
+    });
+
+    it('does not throw on esprima errors', function(done) {
+      dependents({
+        filename: __dirname + '/example/error.js',
+        directory: __dirname + '/example',
+        success: function(err, dependents) {
+          assert(!err);
+          assert(!dependents.length);
+          done();
+        }
+      });
     });
   });
 
@@ -35,7 +64,7 @@ describe('dependents', function() {
       dependents({
         filename: __dirname + '/example/exclusions/a.js',
         directory: __dirname + '/example/exclusions',
-        success: function(dependents) {
+        success: function(err, dependents) {
           assert(!dependents.some(function(dependent) {
             return defaultExclusions.indexOf(dependents) !== -1;
           }));
@@ -49,7 +78,7 @@ describe('dependents', function() {
         filename: __dirname + '/example/exclusions/a.js',
         directory: __dirname + '/example/exclusions',
         exclusions: ['customExclude'],
-        success: function(dependents) {
+        success: function(err, dependents) {
           assert(!dependents.some(function(dependent) {
             return dependent.indexOf('customExclude') !== -1;
           }));
@@ -64,7 +93,7 @@ describe('dependents', function() {
         filename: __dirname + '/example/exclusions/a.js',
         directory: __dirname + '/example/exclusions',
         exclusions: ['customExclude/subdir'],
-        success: function(dependents) {
+        success: function(err, dependents) {
           assert(dependents.some(function(dependent) {
             return dependent.indexOf('customExclude/subdir') !== -1;
           }));
@@ -79,7 +108,7 @@ describe('dependents', function() {
       dependents({
         filename: __dirname + '/example/amd/b.js',
         directory: __dirname + '/example/amd',
-        success: function(dependents) {
+        success: function(err, dependents) {
           assert(dependents.length === 1);
           assert(dependents[0].indexOf('a.js') !== -1);
           done();
@@ -92,7 +121,7 @@ describe('dependents', function() {
         filename: __dirname + '/example/amd/b.js',
         directory: __dirname + '/example/amd',
         config: __dirname + '/example/amd/config.json',
-        success: function(dependents) {
+        success: function(err, dependents) {
           assert(dependents.length === 2);
           assert(dependents[0].indexOf('a.js') !== -1);
           assert(dependents[1].indexOf('c.js') !== -1);
@@ -107,7 +136,7 @@ describe('dependents', function() {
       dependents({
         filename: __dirname + '/example/commonjs/b.js',
         directory: __dirname + '/example/commonjs',
-        success: function(dependents) {
+        success: function(err, dependents) {
           assert(dependents.length);
           done();
         }
@@ -118,7 +147,7 @@ describe('dependents', function() {
       dependents({
         filename: __dirname + '/example/commonjs/b.js',
         directory: __dirname + '/example/commonjs',
-        success: function(dependents) {
+        success: function(err, dependents) {
           assert(dependents.some(function(d) {
             return d.indexOf('c.js') !== -1;
           }));
@@ -133,7 +162,7 @@ describe('dependents', function() {
       dependents({
         filename: __dirname + '/example/es6/b.js',
         directory: __dirname + '/example/es6',
-        success: function(dependents) {
+        success: function(err, dependents) {
           assert(dependents.length);
           done();
         }
@@ -146,7 +175,7 @@ describe('dependents', function() {
       dependents({
         filename: __dirname + '/example/sass/_foo.scss',
         directory: __dirname + '/example/sass',
-        success: function(dependents) {
+        success: function(err, dependents) {
           assert(dependents.length === 2);
           done();
         }

@@ -22,7 +22,7 @@ dependents({
   directory: './',
   config: 'path/to/my/config.js' // optional
   exclude: ['my_vendor_files'],  // optional
-  success: function (dependents) {
+  success: function (err, dependents) {
     console.log(dependents);
   }
 });
@@ -37,7 +37,7 @@ var dependents = require('dependents');
 dependents({
   filename: '_myPartial.scss',
   directory: 'path/to/my/sass',
-  success: function (dependents) {
+  success: function (err, dependents) {
     console.log(dependents);
   }
 });
