@@ -63,31 +63,30 @@ function processFiles(options) {
     cb(null, Object.keys(options.dependents[filename] || {}));
   };
 
+  var _processDeps = function(file, content) {
+    processDependents({
+      filename: file,
+      content: content,
+      directory: directory,
+      dependents: options.dependents,
+      config: options.config
+    });
+  }
+
   var _excludes = util.DEFAULT_EXCLUDE_DIR.concat(options.exclusions);
   var exclusions = util.processExcludes(_excludes, directory);
 
-  var fileOptions;
+  var fileOptions = {
+    directory: directory,
+    dirOptions: {
+      excludeDir: exclusions.directories,
+      exclude: exclusions.files
+    },
+    contentCb: _processDeps,
+    filesCb: done
+  };
 
   if (!files) {
-    fileOptions = {
-      directory: directory,
-      dirOptions: {
-        excludeDir: exclusions.directories,
-        exclude: exclusions.files
-      },
-      contentCb: function(file, content) {
-        processDependents({
-          filename: file,
-          content: content,
-          directory: directory,
-          dependents: options.dependents,
-          config: options.config
-        });
-      },
-      // When all files have been processed
-      filesCb: done
-    };
-
     if (util.isSassFile(filename)) {
       util.getSassFiles(fileOptions);
     } else {
@@ -97,15 +96,9 @@ function processFiles(options) {
   } else {
     files.forEach(function(filename) {
       try {
-        processDependents({
-          filename: filename,
-          content: fs.readFileSync(filename, 'utf8'),
-          directory: directory,
-          dependents: options.dependents,
-          config: options.config
-        });
+        _processDeps(filename, fs.readFileSync(filename, 'utf8'));
       } catch (e) {
-        cb(e);
+        cb(e, []);
       }
     });
 

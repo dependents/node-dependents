@@ -93,8 +93,9 @@ function spawnWorkers(filename, files, cb) {
 
     delegateWork(worker);
 
-    worker.on('message', function(deps) {
-      deps.forEach(function(depFilename) {
+    worker.on('message', function(data) {
+      if (data.err) { throw data.err; }
+      data.deps.forEach(function(depFilename) {
         _dependents[depFilename] = 1;
       });
 
@@ -166,6 +167,7 @@ if (cluster.isMaster) {
     exclude = exclude.split(',');
   }
 
+  exclude = util.DEFAULT_EXCLUDE_DIR.concat(exclude);
   var exclusions = util.processExcludes(exclude, directory);
 
   // Convert once and reuse across processes
@@ -204,7 +206,10 @@ if (cluster.isWorker) {
       config: config,
       exclusions: exclude,
       success: function(err, deps) {
-        process.send(deps);
+        process.send({
+          err: err,
+          deps: deps
+        });
       }
     });
   });
