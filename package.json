@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/mrjoelkemp/node-dependents",
   "dependencies": {
+    "commander": "~2.5.1",
     "get-all-js-files": "~1.2.0",
     "module-lookup-amd": "~1.0.0",
     "node-dir": "~0.1.5",
