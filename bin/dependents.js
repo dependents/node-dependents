@@ -200,7 +200,7 @@ if (cluster.isWorker) {
       files: files,
       config: config,
       exclusions: exclude,
-      success: function(deps) {
+      success: function(err, deps) {
         process.send(deps);
       }
     });
