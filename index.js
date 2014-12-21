@@ -18,10 +18,13 @@ var util = require('./lib/util');
  * @param  {String}       [options.config]  - Path to the shim config
  * @param  {String[]}     [options.exclusions] - List of files and directories to exclude
  */
-module.exports.for = function(options) {
+module.exports = function dependents(options) {
   if (!options || !options.filename) {
-    throw new Error('expected filename whose dependents to compute');
+    throw new Error('expected a filename');
   }
+
+  if (!options.success) { throw new Error('expected success callback'); }
+  if (!options.directory) { throw new Error('expected directory name'); }
 
   options.filename = path.resolve(options.filename);
   options.exclusions = options.exclusions || [];
@@ -32,7 +35,7 @@ module.exports.for = function(options) {
   options.dependents = {};
 
   if (options.config && typeof options.config !== 'object') {
-    options.config = this._readConfig(options.config);
+    options.config = dependents._readConfig(options.config);
   }
 
   processFiles(options);
@@ -56,11 +59,8 @@ function processFiles(options) {
   var files = options.files;
   var cb = options.success;
 
-  if (!cb) { throw new Error('expected callback'); }
-  if (!directory) { throw new Error('expected directory name'); }
-
   var done = function() {
-    cb(Object.keys(options.dependents[filename] || {}));
+    cb(null, Object.keys(options.dependents[filename] || {}));
   };
 
   var _excludes = util.DEFAULT_EXCLUDE_DIR.concat(options.exclusions);
@@ -105,7 +105,7 @@ function processFiles(options) {
           config: options.config
         });
       } catch (e) {
-        console.log(e);
+        cb(e);
       }
     });
 

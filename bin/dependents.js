@@ -5,17 +5,28 @@
 var dependents = require('../');
 var util = require('../lib/util');
 
-var filename = process.argv[2];
-var directory = process.argv[3];
-var config = process.argv[4];
-var exclude = process.argv[5];
-
 var getJSFiles = require('get-all-js-files');
 var cluster = require('cluster');
 var q = require('q');
 var dir = require('node-dir');
 var path = require('path');
 var ConfigFile = require('requirejs-config-file').ConfigFile;
+
+var program = require('commander');
+
+program
+  .version(require('../package.json').version)
+  .usage('[options] <filename>')
+  .option('-d, --directory <path>', 'location of JS files')
+  .option('-c, --config [path]', 'location of a RequireJS config file for AMD')
+  .option('-e, --exclude [path,...]',
+    'comma-separated list of files and folder names to exclude')
+  .parse(process.argv);
+
+var directory = program.directory;
+var config = program.config;
+var exclude = program.exclude;
+var filename = program.args[0];
 
 /**
  * Uniquely aggregates the dependents across forks (if used).
@@ -136,7 +147,7 @@ function filesCb(files) {
     spawnWorkers(filename, files, printDependents);
 
   } else {
-    dependents.for({
+    dependents({
       filename: filename,
       directory: directory,
       files: files,
@@ -183,7 +194,7 @@ if (cluster.isWorker) {
     var files = args.files;
     var config = args.config;
 
-    dependents.for({
+    dependents({
       filename: filename,
       directory: directory,
       files: files,
