@@ -108,7 +108,7 @@ function spawnWorkers(filename, files, cb) {
       throw new Error('missed some files');
     }
 
-    cb(Object.keys(_dependents));
+    cb(null, Object.keys(_dependents));
   });
 }
 
@@ -131,8 +131,11 @@ function getMoreFiles(files, chunkSize) {
   return _files;
 }
 
-/** @param {Array} dependents */
-function printDependents(dependents) {
+/**
+ * @param {Object} err
+ * @param {String[]} dependents
+ */
+function printDependents(err, dependents) {
   dependents.forEach(function(dependent) {
     console.log(dependent);
   });
