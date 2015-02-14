@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "jscs": "~1.7.3",
-    "mocha": "~1.21.4",
+    "mocha": "~2.1.0",
     "sinon": "~1.12.2"
   }
 }
