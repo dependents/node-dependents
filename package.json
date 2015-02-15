@@ -9,8 +9,6 @@
   },
   "unit-coverage": {
     "common": [
-      "-a",
-      "bin",
       "-s",
       "**/*.js",
       "-t",
