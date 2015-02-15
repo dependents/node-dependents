@@ -187,6 +187,7 @@ describe('dependents', function() {
         filename: __dirname + '/example/sass/_foo.scss',
         directory: __dirname + '/example/sass',
         success: function(err, dependents) {
+          assert(!err);
           assert(listHasFile(dependents, 'stylesUnderscore.scss'));
           done();
         }
@@ -202,6 +203,18 @@ describe('dependents', function() {
           assert(dependents.length);
           assert(listHasFile(dependents, 'b.scss'));
           assert(listHasFile(dependents, 'a.scss'));
+          done();
+        }
+      });
+    });
+
+    it('handles files in the same subdirectory', function(done) {
+      dependents({
+        filename: __dirname + '/example/nestedsass/a/b/b.scss',
+        directory: __dirname + '/example/nestedsass',
+        success: function(err, dependents) {
+          assert(!err);
+          assert(listHasFile(dependents, 'b2.scss'));
           done();
         }
       });
