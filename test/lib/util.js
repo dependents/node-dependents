@@ -87,16 +87,4 @@ describe('lib/util', function() {
       assert.equal(util.stripTrailingSlash('.'), '.');
     });
   });
-
-  describe('isRelativePath', function() {
-    it('returns true if the path is relative', function() {
-      assert.ok(util.isRelativePath('.'));
-      assert.ok(util.isRelativePath('./'));
-      assert.ok(util.isRelativePath('..'));
-      assert.ok(util.isRelativePath('../'));
-      assert.ok(util.isRelativePath('../../'));
-      assert.ok(util.isRelativePath('./../'));
-      assert.ok(!util.isRelativePath('foo'));
-    });
-  });
 });
