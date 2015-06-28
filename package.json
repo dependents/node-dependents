@@ -1,6 +1,6 @@
 {
   "name": "dependents",
-  "version": "2.0.9",
+  "version": "2.0.10",
   "description": "Get the files that depend on a given JS/SASS file",
   "main": "index.js",
   "bin": {
