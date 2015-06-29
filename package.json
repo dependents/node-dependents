@@ -32,7 +32,16 @@
     "url": "git://github.com/mrjoelkemp/node-dependents.git"
   },
   "keywords": [
-    "dependents"
+    "dependents",
+    "es6",
+    "es2015",
+    "AMD",
+    "commonjs",
+    "sass",
+    "stylus",
+    "dependency",
+    "static analysis",
+    "ast"
   ],
   "author": "Joel Kemp <joel@mrjoelkemp.com>",
   "license": "MIT",

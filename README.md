@@ -21,7 +21,7 @@ var dependents = require('dependents');
 dependents({
   filename: './a.js',
   directory: './',
-  config: 'path/to/my/config.js' // optional
+  config: 'path/to/my/config.js', // optional
   exclude: ['my_vendor_files'],  // optional
   success: function (err, dependents) {
     console.log(dependents);
