@@ -4,9 +4,13 @@ var path = require('path');
 var util = require('../../lib/util');
 
 describe('lib/util', function() {
-  describe('getSassFiles', function() {
+  describe('getFiles', function() {
+    beforeEach(function() {
+      this.exts = ['.scss', '.sass'];
+    });
+
     it('returns the sass files in a given directory', function(done) {
-      util.getSassFiles({
+      util.getFiles(this.exts, {
         directory: path.resolve(__dirname, '../'),
         filesCb: function(files) {
           assert.ok(files.length);
@@ -16,7 +20,7 @@ describe('lib/util', function() {
     });
 
     it('executes the contentCb with the file name and contents if given', function(done) {
-      util.getSassFiles({
+      util.getFiles(this.exts, {
         directory: path.resolve(__dirname, '../example/sass'),
         contentCb: function(filename, content) {
           assert.ok(filename);
@@ -25,12 +29,6 @@ describe('lib/util', function() {
         filesCb: function() {
           done();
         }
-      });
-    })
-
-    it('throws when not given a directory', function() {
-      assert.throws(function() {
-        util.getSassFiles();
       });
     });
   });
