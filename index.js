@@ -2,8 +2,8 @@ var path = require('path');
 var fs = require('fs');
 var getJSFiles = require('get-all-js-files');
 var ConfigFile = require('requirejs-config-file').ConfigFile;
-var computeDependents = require('./lib/computeDependents');
 
+var computeDependents = require('./lib/computeDependents');
 var util = require('./lib/util');
 
 /**
@@ -12,34 +12,41 @@ var util = require('./lib/util');
  * @param  {Object}       options
  * @param  {String}       options.filename  - The file whose dependents to compute
  * @param  {String|Array} options.directory - Directory name or list of filenames to process
- * @param  {Function}     options.success   - ({String[]}) -> null - Executed with the dependents for the given filename
  * @param  {String}       [options.config]  - Path to the shim config
  * @param  {String[]}     [options.exclusions] - List of files and directories to exclude
  */
-module.exports = function dependents(options) {
+module.exports = function dependents(options, cb) {
+  if (!cb) { throw new Error('expected success callback'); }
+
+  options.cb = cb;
+
   if (!options || !options.filename) {
-    throw new Error('expected a filename');
+    cb(new Error('expected a filename'));
   }
 
-  if (!options.success) { throw new Error('expected success callback'); }
-  if (!options.directory) { throw new Error('expected directory name'); }
+  if (!options.directory) { cb(new Error('expected directory name')); }
 
   options.filename = path.resolve(options.filename);
   options.exclusions = options.exclusions || [];
+
+  if (typeof options.exclusions === 'string') {
+    options.exclusions = options.exclusions.split(',');
+  }
+
+  if (options.config && typeof options.config !== 'object') {
+    options.config = module.exports._readConfig(options.config);
+  }
 
   // Look-up-table whose keys are filenames of JS files in the directory
   // the value for each key is an object of (filename -> dummy value)
   // files that depend on the key
   options.dependents = {};
 
-  if (options.config && typeof options.config !== 'object') {
-    options.config = dependents._readConfig(options.config);
-  }
-
   processFiles(options);
 };
 
 /**
+ * Exposed for testing
  * @private
  * @param  {String} configPath
  * @return {Object}
@@ -60,7 +67,7 @@ function processFiles(options) {
   var directory = options.directory;
   var filename = options.filename;
   var files = options.files;
-  var cb = options.success;
+  var cb = options.cb;
 
   var done = function() {
     cb(null, Object.keys(options.dependents[filename] || {}));
