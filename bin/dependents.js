@@ -2,7 +2,7 @@
 
 'use strict';
 
-var cli = require('../lib/cli');
+var dependents = require('../');
 var program = require('commander');
 
 program
@@ -29,9 +29,13 @@ if (!filename) {
   process.exit(1);
 }
 
-cli({
+dependents({
   directory: directory,
   config: config,
   exclude: exclude,
   filename: filename
+}, function(err, dependents) {
+  dependents.forEach(function(dependent) {
+    console.log(dependent);
+  });
 });

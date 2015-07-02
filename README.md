@@ -10,6 +10,11 @@
 * Supports SASS imports.
 * Support Stylus import/require
 
+Note: this library *will utilize multi-core processing* if the number of files to process
+within the supplied directory is >= 500.
+
+* That empirical threshold was found to be when the tool started to naturally slow down.
+
 ### Usage
 
 ##### JS Example:
@@ -23,9 +28,9 @@ dependents({
   directory: './',
   config: 'path/to/my/config.js', // optional
   exclude: ['my_vendor_files'],  // optional
-  success: function (err, dependents) {
-    console.log(dependents);
-  }
+},
+function(err, dependents) {
+  console.log(dependents);
 });
 ```
 
@@ -40,9 +45,9 @@ var dependents = require('dependents');
 dependents({
   filename: '_myPartial.scss',
   directory: 'path/to/my/sass',
-  success: function (err, dependents) {
-    console.log(dependents);
-  }
+},
+function(err, dependents) {
+  console.log(dependents);
 });
 ```
 
@@ -70,6 +75,3 @@ dependents --directory=path/to/my/js [options] filename
 ```
 
 * You can see all the cli options via `dependents --help`
-
-The shell command will utilize multi-core processing if the `directory`
-contains more than 500 modules. That number was deduced from testing.
