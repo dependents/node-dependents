@@ -57,7 +57,6 @@ function(err, dependents) {
 
 * `filename`: the module that you want to get the dependents of
 * `directory`: the directory to search for dependents (also known as the "root")
-* `success`: a function that should accept a list of filenames representing modules that depend on the module in `filename`
 
 ##### Optional:
 
