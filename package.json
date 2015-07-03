@@ -4,8 +4,7 @@
   "description": "Get the files that depend on a given JS/SASS file",
   "main": "index.js",
   "bin": {
-    "dependents": "bin/dependents.js",
-    "dependency-lookup": "bin/dependencyLookup.js"
+    "dependents": "bin/dependents.js"
   },
   "unit-coverage": {
     "common": [
@@ -22,7 +21,7 @@
     ]
   },
   "scripts": {
-    "test": "jscs -p google test/test.js bin/ index.js && mocha -u bdd test/test.js test/lib/*.js",
+    "test": "jscs test/test.js bin lib index.js && mocha -u bdd test/test.js test/lib/*.js",
     "coverage": "unit-coverage run -p common",
     "coverage-html": "unit-coverage run -p common -r html -o coverage.html",
     "travis": "npm test && unit-coverage run -p common -r lcov -o out.lcov && cat out.lcov | coveralls"
@@ -51,20 +50,23 @@
   "homepage": "https://github.com/mrjoelkemp/node-dependents",
   "dependencies": {
     "commander": "^2.5.1",
-    "get-all-js-files": "~1.2.1",
-    "module-lookup-amd": "~1.0.0",
-    "node-dir": "~0.1.5",
-    "precinct": "~2.5.0",
-    "q": "~1.0.1",
-    "requirejs-config-file": "~2.0.0",
-    "resolve-dependency-path": "~1.0.1",
-    "sass-lookup": "~1.0.0",
-    "stylus-lookup": "~1.0.0"
+    "debug": "^2.2.0",
+    "extend": "^2.0.1",
+    "glob": "^5.0.12",
+    "lodash.difference": "~3.2.2",
+    "module-lookup-amd": "^1.0.0",
+    "precinct": "^2.5.0",
+    "q": "^1.0.1",
+    "requirejs-config-file": "^2.0.0",
+    "resolve-dependency-path": "^1.0.1",
+    "sass-lookup": "^1.0.0",
+    "stylus-lookup": "^1.0.0"
   },
   "devDependencies": {
     "coveralls": "~2.11.2",
     "jscs": "~1.7.3",
     "mocha": "~2.1.0",
+    "rewire": "~2.3.4",
     "sinon": "~1.12.2",
     "unit-coverage": "~3.3.0"
   }
