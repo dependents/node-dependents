@@ -65,6 +65,20 @@ describe('dependents', function() {
         done();
       });
     });
+
+    it('does not throw if the filename is not in the resulting dependents map', function(done) {
+      assert.doesNotThrow(function() {
+        dependents({
+          filename: __dirname + '/mocha.opts',
+          directory: __dirname + '/example'
+        },
+        function(err, dependents) {
+          assert(!err);
+          assert.ok(!dependents.length);
+          done();
+        });
+      });
+    });
   });
 
   describe('exclusions', function() {
