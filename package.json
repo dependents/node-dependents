@@ -21,7 +21,7 @@
     ]
   },
   "scripts": {
-    "test": "jscs test/test.js bin lib index.js && mocha -u bdd test/test.js test/lib/*.js",
+    "test": "jshint index.js test/test.js lib bin && jscs test/test.js bin lib index.js && mocha -u bdd test/test.js test/lib/*.js",
     "coverage": "unit-coverage run -p common",
     "coverage-html": "unit-coverage run -p common -r html -o coverage.html",
     "travis": "npm test && unit-coverage run -p common -r lcov -o out.lcov && cat out.lcov | coveralls"
@@ -52,8 +52,7 @@
     "commander": "^2.5.1",
     "debug": "^2.2.0",
     "extend": "^2.0.1",
-    "glob": "^5.0.12",
-    "lodash.difference": "^3.2.2",
+    "glob-all": "~3.0.1",
     "module-lookup-amd": "^2.0.3",
     "precinct": "^2.5.0",
     "q": "^1.0.1",
@@ -65,6 +64,7 @@
   "devDependencies": {
     "coveralls": "~2.11.2",
     "jscs": "~1.7.3",
+    "jshint": "~2.8.0",
     "mocha": "~2.1.0",
     "rewire": "~2.3.4",
     "sinon": "~1.12.2",
