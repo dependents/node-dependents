@@ -76,7 +76,8 @@ module.exports = function(options, cb) {
     var workerManager = new WorkerManager({
       directory: directory,
       config: config,
-      files: files
+      files: files,
+      webpackConfig: webpackConfig
     });
 
     workerManager.computeAllDependents()
