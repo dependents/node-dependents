@@ -111,6 +111,7 @@ module.exports = function(options, cb) {
 
 /**
  * Exposed for testing
+ *
  * @private
  * @param  {String} configPath
  * @return {Object}
@@ -132,6 +133,7 @@ module.exports._shouldParallelize = function(files) {
 
 /**
  * Set of directories to ignore by default
+ *
  * @type {Array}
  */
 module.exports.DEFAULT_EXCLUDE_DIR = [

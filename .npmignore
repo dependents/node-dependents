@@ -1,0 +1,7 @@
+test
+.deprc
+.gitignore
+.jscsrc
+.jshintrc
+.travis.yml
+coverage.html
