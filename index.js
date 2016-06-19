@@ -50,7 +50,7 @@ module.exports = function(options, cb) {
   exclusions = util.processExcludes(_excludes, directory);
   debug('processed exclusions: ', exclusions);
 
-  if (config && typeof config !== 'object') {
+  if (typeof config === 'string') {
     debug('converting the config path to an object');
     config = module.exports._readConfig(options.config);
   }
@@ -75,7 +75,7 @@ module.exports = function(options, cb) {
   var configuration = {
     directory: directory,
     config: config,
-    configPath: options.config,
+    configPath: typeof options.config === 'string' ? options.config : options.configPath,
     webpackConfig: webpackConfig
   };
 
