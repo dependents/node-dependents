@@ -16,9 +16,8 @@ describe('dependents', function() {
     var config = {
       baseUrl: 'js',
       paths: {
-        a: './a',
-        foobar: './b',
-        templates: './templates'
+        foobar: 'b',
+        templates: '../templates'
       }
     };
 
@@ -197,6 +196,50 @@ describe('dependents', function() {
         done();
       });
     });
+
+    describe('when the baseUrl has a leading slash', function() {
+      beforeEach(function() {
+        this._config = {
+          baseUrl: '/js',
+          paths: {
+            foobar: 'b',
+            templates: '../templates',
+            jquery: 'vendor/jquery.min'
+          }
+        };
+      });
+
+      describe('and we\'re given a pre-parsed config', function() {
+        it('still finds the dependents of a file', function(done) {
+          dependents({
+            filename: __dirname + '/example/amd/js/vendor/jquery.min.js',
+            directory: __dirname + '/example/amd/js',
+            config: this._config,
+            configPath: __dirname + '/example/amd/config.json'
+          },
+          function(err, dependents) {
+            assert.equal(dependents.length, 1);
+            assert(listHasFile(dependents, 'b.js'));
+            done();
+          });
+        });
+      });
+
+      describe('and we are given a config location', function() {
+        it('still finds the dependents of a file', function(done) {
+          dependents({
+            filename: __dirname + '/example/amd/js/vendor/jquery.min.js',
+            directory: __dirname + '/example/amd/js',
+            config: __dirname + '/example/amd/configWithLeadingSlash.json'
+          },
+          function(err, dependents) {
+            assert.equal(dependents.length, 1);
+            assert(listHasFile(dependents, 'b.js'));
+            done();
+          });
+        });
+      });
+    });
   });
 
   describe('commonjs', function() {
@@ -230,6 +273,28 @@ describe('dependents', function() {
       },
       function(err, dependents) {
         assert.ok(dependents.length);
+        done();
+      });
+    });
+
+    it('still works for files with es7', function(done) {
+      dependents({
+        filename: __dirname + '/example/es6/es7.js',
+        directory: __dirname + '/example/es6'
+      },
+      function(err, dependents) {
+        assert.equal(dependents.length, 0);
+        done();
+      });
+    });
+
+    it('still works for files with jsx', function(done) {
+      dependents({
+        filename: __dirname + '/example/es6/jsx.js',
+        directory: __dirname + '/example/es6'
+      },
+      function(err, dependents) {
+        assert.equal(dependents.length, 0);
         done();
       });
     });
