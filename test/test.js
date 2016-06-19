@@ -12,6 +12,21 @@ function listHasFile(list, file) {
 }
 
 describe('dependents', function() {
+  it('does not try to read an empty config string', function(done) {
+    var spy = sinon.spy(dependents, '_readConfig');
+
+    dependents({
+      filename: __dirname + '/amd/js/a.js',
+      directory: __dirname + '/amd/js',
+      config: ''
+    },
+    function() {
+      assert.ok(!spy.called);
+      spy.restore();
+      done();
+    });
+  });
+
   it('reuses a given configuration object config', function(done) {
     var config = {
       baseUrl: 'js',
@@ -29,6 +44,7 @@ describe('dependents', function() {
       config: config
     },
     function() {
+      spy.restore();
       assert.ok(!spy.called);
       done();
     });
