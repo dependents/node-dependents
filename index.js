@@ -50,7 +50,7 @@ module.exports = function(options, cb) {
   exclusions = util.processExcludes(_excludes, directory);
   debug('processed exclusions: ', exclusions);
 
-  if (typeof config === 'string') {
+  if (config && typeof config === 'string') {
     debug('converting the config path to an object');
     config = module.exports._readConfig(options.config);
   }
