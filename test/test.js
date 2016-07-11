@@ -425,5 +425,29 @@ describe('dependents', function() {
         done();
       });
     });
+
+    it('allows the file threshold to be configurable', function(done) {
+      var deferred = q.defer();
+      var filename = __dirname + '/example/commonjs/b.js';
+      var deps = {};
+      deps[filename] = {};
+      deferred.resolve(deps);
+
+      var stub = sinon.stub(WorkerManager.prototype, 'computeAllDependents').returns(deferred.promise);
+      var spy = sinon.spy(dependents, '_shouldParallelize');
+      var newThreshold = 1;
+
+      dependents({
+        filename: __dirname + '/example/commonjs/b.js',
+        directory: __dirname + '/example/commonjs',
+        parallelThreshold: newThreshold
+      }, function() {
+        var threshold = spy.args[0][1];
+        assert.equal(threshold, newThreshold);
+        spy.restore();
+        stub.restore();
+        done();
+      });
+    });
   });
 });
