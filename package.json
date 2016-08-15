@@ -52,9 +52,9 @@
     "commander": "^2.5.1",
     "debug": "^2.2.0",
     "extend": "^2.0.1",
-    "filing-cabinet": "~1.2.6",
+    "filing-cabinet": "^1.4.0",
     "glob-all": "~3.0.1",
-    "precinct": "^3.0.0",
+    "precinct": "^3.1.1",
     "q": "^1.0.1",
     "requirejs-config-file": "^2.0.0"
   },
